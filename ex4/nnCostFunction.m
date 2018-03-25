@@ -48,6 +48,9 @@ for i = 1:m
                        - (1 - y_matrix(i, :)') .* log(1 - a3(i, :)'));    
 end
 
+J += (lambda / (2 * m)) * (sum(sum(Theta1(:, 2:end) .^ 2)) 
+                            + sum(sum(Theta2(:, 2:end) .^ 2)));
+
 %
 % Part 2: Implement the backpropagation algorithm to compute the gradients
 %         Theta1_grad and Theta2_grad. You should return the partial derivatives of
