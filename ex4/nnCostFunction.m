@@ -51,7 +51,6 @@ end
 J += (lambda / (2 * m)) * (sum(sum(Theta1(:, 2:end) .^ 2)) 
                             + sum(sum(Theta2(:, 2:end) .^ 2)));
 
-%
 % Part 2: Implement the backpropagation algorithm to compute the gradients
 %         Theta1_grad and Theta2_grad. You should return the partial derivatives of
 %         the cost function with respect to Theta1 and Theta2 in Theta1_grad and
@@ -66,7 +65,27 @@ J += (lambda / (2 * m)) * (sum(sum(Theta1(:, 2:end) .^ 2))
 %         Hint: We recommend implementing backpropagation using a for-loop
 %               over the training examples if you are implementing it for the 
 %               first time.
-%
+
+Delta2 = zeros(size(Theta2));
+Delta1 = zeros(size(Theta1));
+
+for i = 1:m
+    a1 = [1, X(i, :)];
+    a2 = [1, sigmoid(a1 * Theta1')];
+    a3 = sigmoid(a2 * Theta2');
+
+    delta3 = a3 - y_matrix(i, :);
+    delta2 = delta3 * Theta2 .* sigmoidGradient([1 a1 * Theta1']);
+    delta2 = delta2(2:end);
+
+    Delta2 += (a2' * delta3)';
+    Delta1 += (a1' * delta2)';
+end
+
+Theta2_grad = (1 / m) * Delta2;
+Theta1_grad = (1 / m) * Delta1;
+
+
 % Part 3: Implement regularization with the cost function and gradients.
 %
 %         Hint: You can implement this around the code for
