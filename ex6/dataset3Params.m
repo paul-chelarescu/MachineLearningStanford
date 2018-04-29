@@ -23,10 +23,20 @@ sigma = 0.3;
 %        mean(double(predictions ~= yval))
 %
 
+minPredError = +Inf;
 
-
-
-
+for CIt = [0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30]
+    for sigmaIt = [0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30]
+        model = svmTrain(X, y, CIt, @(x1, x2) gaussianKernel(x1, x2, sigmaIt));
+        pred = svmPredict(model, Xval);
+        predError = mean(double(pred ~= yval));
+        if minPredError > predError
+            minPredError = predError;
+            C = CIt;
+            sigma = sigmaIt;
+        end
+    end
+end
 
 
 % =========================================================================
