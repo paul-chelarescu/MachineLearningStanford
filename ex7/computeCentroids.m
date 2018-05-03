@@ -35,7 +35,9 @@ for i = 1:K
             count += 1;
         end
     end
-    centroids(i,:) = accumulator / count;
+    if count ~= 0
+        centroids(i,:) = accumulator / count;
+    end
 end
 
 % =============================================================
